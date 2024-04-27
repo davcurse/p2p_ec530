@@ -4,7 +4,7 @@ Peer to peer project for EC530
 
 David LI
 
-Simple peer 2 peer chatroom through terminal with python sockets and threading implemented. Works for as many users as can be handled! Security and extra chatting features to be implemented soon! :)
+Simple peer 2 peer chatroom through terminal with python sockets and threading implemented. Server allows users to create socket between each other so that they can communicate peer2peer. Works for as many users as can be handled! Security and extra chatting features to be implemented soon! :) Database logging for user text supported!
 
 ## To run:
 
