@@ -1,6 +1,7 @@
 import threading
 import socket
 import sqlite3
+import bleach
 
 host = '127.0.0.1'  # localhost
 port = 22212
@@ -14,6 +15,8 @@ all_usernames = []
 # generates database to store user info/message history
 conn = sqlite3.connect('chat_database.db', check_same_thread=False)
 cursor = conn.cursor()
+
+cursor.execute('PRAGMA secure_delete = ON')
 
 # creates client table
 cursor.execute('''CREATE TABLE IF NOT EXISTS clients
@@ -47,10 +50,11 @@ def handle(client):
                 client.close()
                 exit()
             else:
-                broadcast(message.encode('ascii'))
+                clean_message = bleach.clean(message)
+                broadcast(clean_message.encode('ascii'))
                 client_id = all_clients.index(client) + 1
                 cursor.execute("INSERT INTO messages (client_id, message)\
-                        VALUES (?, ?)", (client_id, message))
+                        VALUES (?, ?)", (client_id, clean_message))
                 conn.commit()
         except ConnectionResetError:
             index = all_clients.index(client)
